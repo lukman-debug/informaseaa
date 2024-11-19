@@ -1,0 +1,39 @@
+<!-- myapp/templates/homepage.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: {
+                'fredoka': ['Fredoka'],
+                'oswald' : ['Oswald'],
+                'ptserif': ['PT Serif']
+              }
+            }
+          }
+        }
+    </script>
+    <title>Homepage</title>
+</head>
+<body>
+    <div class="w-full min-h-screen flex items-center justify-center bg-[url('/static/img/home.jpg')] bg-cover">
+        <div class="w-[71%] h-[300px] md:pl-[150px] pl-[30px] bg-amber-500 bg-opacity-80 border-y-4 border-cyan-700">
+            <p class="md:text-5xl text-sm font-oswald py-[50px] md:py-[100px]">
+                Selamat Datang di Web <br>
+                <span class="md:text-7xl text-2xl text-cyan-700">InformaSea</span>
+            </p>
+        </div>
+        <div class="w-[29%] items-center text-center h-[300px] border-y-4 border-amber-500 bg-cyan-700 bg-opacity-80 hover:bg-amber-500 hover:bg-opacity-80">
+            <div class="md:py-[135px] py-[135px]">
+                <a href="{% url 'dashboard' %}" class="text-sm text-white font-oswald hover:text-cyan-700">Get Started</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="transition h-full ml-14 mt-14 md:ml-64 ">
+    <div class="justify-center text-center bg-[url('/static/img/dashboard.jpg')] bg-cover bg-fixed" >
+        <div class=" md:px-[250px] px-[50px] pb-2 pt-[50px] md:pt-[100px] bg-gradient-to-b from-cyan-900 to-transparent ">
+            <P class="  font-oswald md:text-6xl text-xl text-white pb-2">InformaSea</P>
+            <P class="  font-semibold md:text-xl text-sm text-white pb-2 border-b-4 border-amber-500">where the ocean becomes an endless source of discovery!</P>
+        </div>
+            <div>
+                <div class="relative w-full text-white text-center font-bold">
+                <div class="md:px-[180px] px-[30px] md:text-base text-xs font-bold md:py-7">
+                <p class="font-semibold bg-cyan-900 bg-opacity-70 rounded-xl p-5"><span class="font-bold text-amber-600">Selamat datang di InformaSea,</span> destinasi virtual yang membawa Anda menjelajahi kedalaman pengetahuan tentang kehidupan laut. InformaSea adalah tempat di mana pengetahuan dan kepentingan bertemu, memberikan kontribusi positif untuk pemahaman dan pelestarian ekosistem laut. Kami mengundang Anda untuk menjelajahi dan memanfaatkan sumber daya yang tersedia di InformaSea demi keberlanjutan dan peningkatan kesadaran akan pentingnya perikanan dan kelautan dalam kehidupan kita. Ini adalah usaha penuh semangat untuk membawa keajaiban lautan lebih dekat kepada Anda.</p>
+            </div>
+        </div>
+    </div>
+    <div class="w-full flex items-center">
+        <div class="w-[50%]">
+            <div class="md:px-20 md:py-12 px-2 py-7  h-full ">
+                <a href="{% url 'dashboard' %}">
+                <div class="justify-center text-center bg-[url('/static/img/ikankarang.jpg')] bg-cover text-center rounded-3xl">
+                    <div class=" ">
+                      <P class=" md:py-[50px] py-7 px-2 font-bold md:text-base text-xs bg-cyan-900 bg-opacity-50 text-white hover:bg-amber-500 hover:bg-opacity-30 rounded rounded-3xl border-b-4 border-amber-600">Lihat Info Mengenai Biota Laut</P>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="md:px-20 md:py-12 px-2 py-7  h-full ">
+                <a href="{% url 'dashboard' %}">
+                <div class="justify-center text-center bg-[url('/static/img/permukaanlaut.jpg')] bg-cover text-center rounded-3xl">
+                    <div class=" ">
+                      <P class=" md:py-[50px] py-7 px-2 font-bold md:text-base text-xs bg-cyan-900 bg-opacity-70 text-white hover:bg-amber-500 hover:bg-opacity-30 rounded rounded-3xl border-b-4 border-amber-600">Lihat Info Suhu Permukaan Laut Indonesia</P>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="md:px-20 md:py-12 px-2 py-7 px-2  h-full ">
+                <a href="{% url 'dashboard' %}">
+                <div class="justify-center text-center bg-[url('/static/img/cuaca.jpg')] bg-cover text-center rounded-3xl">
+                    <div class=" ">
+                      <P class=" md:py-[50px] py-7 px-5 font-bold md:text-base text-xs bg-cyan-900 bg-opacity-70 text-white hover:bg-amber-500 hover:bg-opacity-30 rounded rounded-3xl border-b-4 border-amber-600">Lihat Info Cuaca Terkini</P>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+        <div class="w-[50%]">
+            <div class="md:px-20 md:py-12 px-2 py-7 h-full ">
+                <a href="{% url 'dashboard' %}">
+                <div class="justify-center text-center bg-[url(/static/img/underwater.jpg')] bg-cover text-center rounded-3xl">
+                    <div class=" ">
+                      <P class=" md:py-[50px] py-7 px-2 font-bold text-xs md:text-base bg-cyan-900 bg-opacity-50 text-white hover:bg-amber-500 hover:bg-opacity-30 rounded rounded-3xl border-b-4 border-amber-600">Ayo Jelajahi Laut Virtual</P>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="md:px-20 md:py-12 px-2 py-7 px-2 h-full ">
+                <a href="{% url 'dashboard' %}">
+                <div class="justify-center text-center bg-[url('/static/img/wave.jpg')] bg-cover text-center rounded-3xl">
+                    <div class=" ">
+                      <P class=" md:py-[50px] py-7 px-5 font-bold text-xs md:text-base bg-cyan-900 bg-opacity-50 text-white hover:bg-amber-500 hover:bg-opacity-30 rounded rounded-3xl border-b-4 border-amber-600">Lihat Data Gelombang di Indonesia</P>
+                    </div>
+                </div>
+                </a>
+            </div>
+            <div class="md:px-20 md:py-12 px-2 py-7 px-2  h-full ">
+                <a href="{% url 'dashboard' %}">
+                <div class="justify-center text-center bg-[url('/static/img/cuaca.jpg')] bg-cover text-center rounded-3xl">
+                    <div class=" ">
+                      <P class=" md:py-[50px] py-7 px-5 font-bold md:text-base text-xs bg-cyan-900 bg-opacity-50 text-white hover:bg-amber-500 hover:bg-opacity-30 rounded rounded-3xl border-b-4 border-amber-600">Cari Dataset Penelitian</P>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+    
+    
+</div>
+
+{% endblock %}
