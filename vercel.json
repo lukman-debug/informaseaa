@@ -1,8 +1,16 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "manage.py",
+      "use": "@vercel/python",
+      "config": { "distDir": "vercel_build" }
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "informasea/wsgi.py"
+      "dest": "/manage.py"
     }
   ]
 }
