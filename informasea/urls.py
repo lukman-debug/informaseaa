@@ -16,15 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin # type: ignore
 from django.urls import path, include # type: ignore
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('myapp.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('chatbot/', include('chatbot.urls')),
-    path('uburubur/', include('uburubur.urls')),
-    path('prediksea/', include('prediksea.urls')),
+    # path('uburubur/', include('uburubur.urls')),  # Temporarily disabled due to missing dependencies
+    # path('prediksea/', include('prediksea.urls')),  # Temporarily disabled due to missing model files
     path('tanyapeta/', include('tanyapeta.urls')),
     path('ikan/', include('ikan_segar.urls')),
     path('deteksea/', include('deteksea.urls')),
+    path('kapal/', include('kapal.urls')),  # New ship management app
 ]
+
+# Serve media files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

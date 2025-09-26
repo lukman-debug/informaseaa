@@ -1,0 +1,288 @@
+{% extends 'kapal/base.html' %}
+
+{% block kapal_content %}
+<div class="bg-white rounded-lg shadow-lg p-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Edit Data Kapal</h1>
+            <p class="text-gray-600">Perbarui informasi kapal {{ kapal.nama_kapal }}</p>
+        </div>
+        <div class="flex space-x-3">
+            <a href="{% url 'kapal:detail' kapal.pk %}" class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors duration-200">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m0 7h18"></path>
+                </svg>
+                Kembali
+            </a>
+        </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        
+        <!-- Basic Information -->
+        <div class="border-b border-gray-200 pb-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Informasi Dasar</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="nama_kapal" class="block text-sm font-medium text-gray-700 mb-2">Nama Kapal *</label>
+                    <input type="text" id="nama_kapal" name="nama_kapal" value="{{ kapal.nama_kapal }}" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="nomor_registrasi" class="block text-sm font-medium text-gray-700 mb-2">Nomor Registrasi *</label>
+                    <input type="text" id="nomor_registrasi" name="nomor_registrasi" value="{{ kapal.nomor_registrasi }}" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="pemilik" class="block text-sm font-medium text-gray-700 mb-2">Pemilik *</label>
+                    <input type="text" id="pemilik" name="pemilik" value="{{ kapal.pemilik }}" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="jenis_kapal" class="block text-sm font-medium text-gray-700 mb-2">Jenis Kapal *</label>
+                    <input type="text" id="jenis_kapal" name="jenis_kapal" value="{{ kapal.jenis_kapal }}" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                           placeholder="Contoh: Kapal Penangkap Ikan, Kapal Cargo">
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Specifications -->
+        <div class="border-b border-gray-200 pb-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Spesifikasi Teknis</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div>
+                    <label for="tonase" class="block text-sm font-medium text-gray-700 mb-2">Tonase (GT) *</label>
+                    <input type="number" step="0.01" id="tonase" name="tonase" value="{{ kapal.tonase }}" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="panjang" class="block text-sm font-medium text-gray-700 mb-2">Panjang (m) *</label>
+                    <input type="number" step="0.01" id="panjang" name="panjang" value="{{ kapal.panjang }}" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="lebar" class="block text-sm font-medium text-gray-700 mb-2">Lebar (m) *</label>
+                    <input type="number" step="0.01" id="lebar" name="lebar" value="{{ kapal.lebar }}" required
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                </div>
+                <div>
+                    <label for="tahun_pembuatan" class="block text-sm font-medium text-gray-700 mb-2">Tahun Pembuatan *</label>
+                    <input type="number" id="tahun_pembuatan" name="tahun_pembuatan" value="{{ kapal.tahun_pembuatan }}" required min="1900" max="2030"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                </div>
+            </div>
+            <div class="mt-4">
+                <label for="pelabuhan_asal" class="block text-sm font-medium text-gray-700 mb-2">Pelabuhan Asal *</label>
+                <input type="text" id="pelabuhan_asal" name="pelabuhan_asal" value="{{ kapal.pelabuhan_asal }}" required
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+            </div>
+        </div>
+
+        <!-- Current Document -->
+        {% if kapal.has_document %}
+        <div class="border-b border-gray-200 pb-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Dokumen Saat Ini</h2>
+            <div class="bg-gray-50 rounded-lg p-4">
+                {% if kapal.dokumen.name|slice:"-4:" == ".pdf" %}
+                    <!-- PDF Document -->
+                    <div class="flex items-center space-x-3">
+                        <div class="flex-shrink-0">
+                            <svg class="w-10 h-10 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-900">{{ kapal.document_name }}</p>
+                            <p class="text-sm text-gray-500">PDF Document</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <!-- Image Document -->
+                    <div class="text-center">
+                        <img src="{{ kapal.document_url }}" alt="{{ kapal.document_name }}" class="document-preview mx-auto mb-3">
+                        <p class="text-sm font-medium text-gray-900">{{ kapal.document_name }}</p>
+                    </div>
+                {% endif %}
+                <div class="mt-3 flex space-x-2">
+                    <a href="{{ kapal.document_url }}" target="_blank" class="text-cyan-600 hover:text-cyan-800 text-sm">Lihat Dokumen</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Document Upload Section -->
+        <div class="border-b border-gray-200 pb-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">
+                {% if kapal.has_document %}Ganti Dokumen{% else %}Upload Dokumen{% endif %}
+            </h2>
+            <p class="text-sm text-gray-600 mb-4">Upload dokumen kapal (PDF, JPG, PNG). Maksimal 5 MB.</p>
+            
+            <div class="border border-gray-200 rounded-lg p-4">
+                <input type="file" id="dokumen" name="dokumen" accept=".pdf,.jpg,.jpeg,.png" class="hidden">
+                <div class="file-drop-area" id="file-drop-area">
+                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    <p class="text-gray-600 font-medium">Drag & drop file di sini</p>
+                    <p class="text-sm text-gray-500 mb-2">atau</p>
+                    <button type="button" onclick="document.getElementById('dokumen').click()" class="px-4 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-700 transition-colors">
+                        Pilih File
+                    </button>
+                    <p class="text-xs text-gray-500 mt-2">PDF, JPG, PNG (Max 5MB)</p>
+                </div>
+                
+                <div id="file-info" class="hidden mt-3 p-3 bg-gray-50 rounded-md">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span id="file-name" class="text-sm font-medium text-gray-900"></span>
+                        </div>
+                        <button type="button" id="remove-file-btn" class="text-red-600 hover:text-red-800 text-sm">
+                            Hapus
+                        </button>
+                    </div>
+                    <p id="file-size" class="text-xs text-gray-500 mt-1"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="pb-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">Keterangan Tambahan</h2>
+            <div>
+                <label for="keterangan" class="block text-sm font-medium text-gray-700 mb-2">Keterangan</label>
+                <textarea id="keterangan" name="keterangan" rows="4"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                          placeholder="Tambahkan keterangan atau catatan tambahan...">{{ kapal.keterangan }}</textarea>
+            </div>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
+            <button type="submit" class="flex-1 px-6 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-lg transition-colors duration-200">
+                <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                Simpan Perubahan
+            </button>
+            <a href="{% url 'kapal:detail' kapal.pk %}" class="flex-1 px-6 py-3 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium rounded-lg text-center transition-colors duration-200">
+                Batal
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // File upload functionality
+    const fileInput = document.getElementById('dokumen');
+    const fileDropArea = document.getElementById('file-drop-area');
+    const fileInfo = document.getElementById('file-info');
+    const fileName = document.getElementById('file-name');
+    const fileSize = document.getElementById('file-size');
+    const removeFileBtn = document.getElementById('remove-file-btn');
+
+    function displayFileInfo(file) {
+        fileName.textContent = file.name;
+        fileSize.textContent = formatFileSize(file.size);
+        fileInfo.classList.remove('hidden');
+    }
+
+    function removeFile() {
+        fileInput.value = '';
+        fileInfo.classList.add('hidden');
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function validateFile(file) {
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+        
+        if (file.size > maxSize) {
+            alert('File terlalu besar. Maksimal 5MB.');
+            return false;
+        }
+        
+        if (!allowedTypes.includes(file.type)) {
+            alert('Format file tidak didukung. Gunakan PDF, JPG, atau PNG.');
+            return false;
+        }
+        
+        return true;
+    }
+
+    // Event listeners
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file && validateFile(file)) {
+            displayFileInfo(file);
+        } else if (file) {
+            removeFile();
+        }
+    });
+    
+    removeFileBtn.addEventListener('click', removeFile);
+
+    // Drag and drop functionality
+    fileDropArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        fileDropArea.classList.add('dragover');
+    });
+
+    fileDropArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        fileDropArea.classList.remove('dragover');
+    });
+
+    fileDropArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        fileDropArea.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            const file = files[0];
+            if (validateFile(file)) {
+                fileInput.files = files;
+                displayFileInfo(file);
+            }
+        }
+    });
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const requiredFields = ['nama_kapal', 'nomor_registrasi', 'pemilik', 'jenis_kapal', 'tonase', 'panjang', 'lebar', 'tahun_pembuatan', 'pelabuhan_asal'];
+        let isValid = true;
+        
+        requiredFields.forEach(fieldName => {
+            const field = document.getElementById(fieldName);
+            if (!field.value.trim()) {
+                field.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                field.classList.remove('border-red-500');
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            alert('Mohon lengkapi semua field yang wajib diisi.');
+            return false;
+        }
+    });
+});
+</script>
+{% endblock %}
