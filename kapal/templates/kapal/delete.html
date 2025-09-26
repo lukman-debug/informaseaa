@@ -1,0 +1,170 @@
+{% extends 'kapal/base.html' %}
+
+{% block kapal_content %}
+<div class="bg-white rounded-lg shadow-lg p-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h1 class="text-2xl md:text-3xl font-bold text-red-600 mb-2">Hapus Data Kapal</h1>
+            <p class="text-gray-600">Konfirmasi penghapusan data kapal</p>
+        </div>
+        <a href="{% url 'kapal:detail' kapal.pk %}" class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors duration-200">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m0 7h18"></path>
+            </svg>
+            Kembali
+        </a>
+    </div>
+
+    <!-- Warning -->
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                </svg>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-medium text-red-800">Peringatan!</h3>
+                <p class="mt-2 text-sm text-red-700">
+                    Tindakan ini tidak dapat dibatalkan. Semua data kapal dan dokumen yang terkait akan dihapus secara permanen.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ship Information -->
+    <div class="bg-gray-50 rounded-lg p-6 mb-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Data yang akan dihapus:</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">Nama Kapal</label>
+                <p class="text-gray-900 font-medium">{{ kapal.nama_kapal }}</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">Nomor Registrasi</label>
+                <p class="text-gray-900 font-medium">{{ kapal.nomor_registrasi }}</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">Pemilik</label>
+                <p class="text-gray-900">{{ kapal.pemilik }}</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">Jenis Kapal</label>
+                <p class="text-gray-900">{{ kapal.jenis_kapal }}</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">Spesifikasi</label>
+                <p class="text-gray-900">{{ kapal.tonase }} GT, {{ kapal.panjang }}×{{ kapal.lebar }} m</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-500 mb-1">Status Dokumen</label>
+                <span class="document-status-indicator status-{{ kapal.status_dokumen }}">
+                    {{ kapal.get_status_dokumen_display }}
+                </span>
+            </div>
+        </div>
+
+        {% if kapal.has_document %}
+        <div class="mt-4 pt-4 border-t border-gray-200">
+            <label class="block text-sm font-medium text-gray-500 mb-2">Dokumen yang akan dihapus</label>
+            <div class="flex items-center space-x-3">
+                {% if kapal.dokumen.name|slice:"-4:" == ".pdf" %}
+                    <svg class="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                    </svg>
+                {% else %}
+                    <img src="{{ kapal.document_url }}" alt="{{ kapal.document_name }}" class="w-16 h-16 object-cover rounded-lg">
+                {% endif %}
+                <div>
+                    <p class="text-sm font-medium text-gray-900">{{ kapal.document_name }}</p>
+                    <p class="text-sm text-gray-500">File dokumen akan dihapus</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Confirmation Form -->
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-yellow-800">Konfirmasi Penghapusan</h3>
+                    <p class="mt-2 text-sm text-yellow-700">
+                        Untuk mengkonfirmasi penghapusan, ketik <strong>"{{ kapal.nama_kapal }}"</strong> pada kolom di bawah ini:
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label for="confirmation" class="block text-sm font-medium text-gray-700 mb-2">
+                Ketik nama kapal untuk konfirmasi
+            </label>
+            <input type="text" id="confirmation" name="confirmation" required
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                   placeholder="Ketik: {{ kapal.nama_kapal }}">
+            <p class="mt-1 text-xs text-gray-500">Nama harus sama persis dengan nama kapal di atas</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200">
+            <button type="submit" id="delete-button" disabled
+                    class="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors duration-200">
+                <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+                Ya, Hapus Kapal
+            </button>
+            <a href="{% url 'kapal:detail' kapal.pk %}" class="flex-1 px-6 py-3 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium rounded-lg text-center transition-colors duration-200">
+                Batal
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const confirmationInput = document.getElementById('confirmation');
+    const deleteButton = document.getElementById('delete-button');
+    const expectedName = "{{ kapal.nama_kapal }}";
+
+    confirmationInput.addEventListener('input', function() {
+        if (this.value === expectedName) {
+            deleteButton.disabled = false;
+            deleteButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+            deleteButton.classList.add('bg-red-600', 'hover:bg-red-700');
+        } else {
+            deleteButton.disabled = true;
+            deleteButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+            deleteButton.classList.remove('bg-red-600', 'hover:bg-red-700');
+        }
+    });
+
+    // Final confirmation before submit
+    document.querySelector('form').addEventListener('submit', function(e) {
+        if (confirmationInput.value !== expectedName) {
+            e.preventDefault();
+            alert('Nama kapal tidak sesuai. Mohon ketik nama kapal dengan benar.');
+            return false;
+        }
+
+        if (!confirm('Apakah Anda yakin ingin menghapus kapal ini? Tindakan ini tidak dapat dibatalkan.')) {
+            e.preventDefault();
+            return false;
+        }
+    });
+});
+</script>
+{% endblock %}
